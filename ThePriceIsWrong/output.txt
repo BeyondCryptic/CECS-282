@@ -1,0 +1,40 @@
+Output:
+a)
+
+Please choose a door, 1 to 3: 
+3
+We will now reveal a door.
+Door 2 was revealed. There was a goat behind it. Do you want to switch doors, yes (y) or no (n)?
+n
+Congratulations,  you've won!
+You've won prize number 3 which is an iPod.
+
+b)
+
+Please choose a door, 1 to 3: 
+3
+We will now reveal a door.
+Door 2 was revealed. There was a goat behind it. Do you want to switch doors, yes (y) or no (n)?
+y
+Door 1 was opened.
+Congratulations,  you've won!
+You've won prize number 2 which is a laptop.
+
+c)
+
+Please choose a door, 1 to 3: 
+1
+We will now reveal a door.
+Door 3 was revealed. There was a goat behind it. Do you want to switch doors, yes (y) or no (n)?
+n
+Sorry, you lost.
+
+d)
+
+Please choose a door, 1 to 3: 
+1
+We will now reveal a door.
+Door 2 was revealed. There was a goat behind it. Do you want to switch doors, yes (y) or no (n)?
+y
+Door 3 was opened.
+Sorry, you lost.
