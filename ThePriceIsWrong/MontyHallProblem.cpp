@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 
    int winningDoor = distr(engine);
 
-   cout << "Winning door: " << winningDoor << endl;
+   // cout << "Winning door: " << winningDoor << endl;
 
    int userChoice;
 
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
       doorShown = distr(engine);
    }
 
-   cout << "Door " << doorShown << " was revealed. Do you want to switch doors, yes (y) or no (n)?" << endl;
+   cout << "Door " << doorShown << " was revealed. There was a goat behind it. Do you want to switch doors, yes (y) or no (n)?" << endl;
 
    char switchDoors;
 
