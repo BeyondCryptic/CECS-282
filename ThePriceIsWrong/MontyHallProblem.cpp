@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
 
    cin >> switchDoors;
 
-   if (switchDoors != 'y' && switchDoors != 'n') {
+   while (switchDoors != 'y' && switchDoors != 'n') {
       cout << "Please enter a valid choice!" << endl;
       cin >> switchDoors;
    }
