@@ -72,8 +72,8 @@ int main(int argc, char* argv[]) {
    }
 
    if (win) {
-      int prize = distr(engine);
       uniform_int_distribution<int> distr(1, MAX_PRIZE_CHOICE);
+      int prize = distr(engine);
       cout << "You've won prize number " << prize << " which is ";
       if (prize == 1) {
          cout << "a PS4." << endl;
