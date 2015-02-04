@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
    }
    else {
       if (userChoice == winningDoor) {
-         cout << "Congratulations,  you've won!" << endl;
+         cout << "Congratulations, you've won!" << endl;
          win = true;
       }
       else {
