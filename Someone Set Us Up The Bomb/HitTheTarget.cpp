@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
    default_random_engine engine(seed);
    uniform_real_distribution<double> distr(1, MAX_DISTANCE);
 
-   dist = 222.77;
+   dist = distr(engine); // 222.77;
 
    cout << "The target is " << setprecision(2) << fixed << dist <<
       "m away." << endl;
