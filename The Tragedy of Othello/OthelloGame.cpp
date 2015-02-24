@@ -82,8 +82,9 @@ void PrintBoard(char board[BOARD_SIZE][BOARD_SIZE]) {
             cout << 'W' << " ";
          }
       }
-      cout << "\n" << endl;
+      cout << endl;
    }
+   cout << endl;
 }
 
 bool InBounds(int row, int col) {
