@@ -103,7 +103,7 @@ void GetMove(int *row, int *col) {
 }
 
 void ApplyMove(char board[BOARD_SIZE][BOARD_SIZE], int row, int col,
- char currentPlayer) {
+   char currentPlayer) {
    board[row][col] = currentPlayer;
    int xNext = -1, yNext = -1, count = 0;
    while (xNext <= 1) {
@@ -111,21 +111,21 @@ void ApplyMove(char board[BOARD_SIZE][BOARD_SIZE], int row, int col,
       while (yNext <= 1) {
          if (xNext != 0 || yNext != 0) {
             int xNew = row + xNext, yNew = col + yNext;
-            while (InBounds(xNew, yNew) || board[xNew][yNew] != 0) {
+            while (InBounds(xNew, yNew) && board[xNew][yNew] != 0) {
+               int xPrev = xNew - xNext, yPrev = yNew - yNext;
                if (board[xNew][yNew] != currentPlayer) {
-                  if (InBounds(xNew + xNext, yNew + yNext)
-                     && board[xNew + xNext][yNew + yNext] != 0) {
-                     count++;
-                  }
+                  count += 1;
                }
-               xNew = xNew + xNext, yNew = yNew + yNext;
+               while (board[xNew][yNew] == currentPlayer && count > 0) {
+                  board[xPrev][yPrev] = currentPlayer;
+                  xPrev -= xNext, yPrev -= yNext, count -= 1;
+               }
+               if (board[xNew][yNew] == currentPlayer && count == 0) {
+                  break;
+               }
+               xNew += xNext, yNew += yNext;
             }
-            xNew = row + xNext, yNew = col + yNext;
-            while (InBounds(xNew, yNew) && count > 0) {
-               board[xNew][yNew] = currentPlayer;
-               count--;
-               xNew = xNew + xNext, yNew = yNew + yNext;
-            }
+            count = 0, xNew = row + xNext, yNew = col + yNext;
          }
          yNext = yNext > 1 ? -1 : yNext+1;
       }
