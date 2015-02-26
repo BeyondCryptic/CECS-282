@@ -5,7 +5,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-   int row = 0, col = 0, currentPlayer = 1;
+   int row = 0, col = 0, currentPlayer = 1, value;
    bool playing = true, bPass = false, wPass = false;
 
    char board[BOARD_SIZE][BOARD_SIZE] = {
@@ -45,13 +45,14 @@ int main(int argc, char* argv[]) {
          ApplyMove(board, row, col, currentPlayer);
       }
       if (bPass && wPass) {
-         if (GetValue(board) > 0) {
+         value = GetValue(board);
+         if (value > 0) {
             cout << "\nGame over. Black wins!" << endl;
          }
-         else if (GetValue(board) < 0) {
+         else if (value < 0) {
             cout << "\nGame over. White wins!" << endl;
          }
-         else if (GetValue(board) == 0) {
+         else if (value == 0) {
             cout << "\nGame over. We have a tie!" << endl;
          }
          playing = false;
