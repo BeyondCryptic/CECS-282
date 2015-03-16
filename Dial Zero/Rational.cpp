@@ -17,8 +17,9 @@ Rational::Rational()
 }
 
 Rational::Rational(const Rational &copyThis)
-   :  mNumerator(copyThis.mNumerator), mDenominator(copyThis.mDenominator)
 {
+   mNumerator = copyThis.mNumerator;
+   mDenominator = copyThis.mDenominator;
 }
 
 const int Rational::GetNumerator() const {
@@ -93,6 +94,69 @@ ostream &operator<<(std::ostream &lhs, const Rational &rhs) {
    return lhs;
 }
 
-const Rational &operator=(const Rational &lhs, const Rational &rhs) {
-   return lhs = rhs;
+Rational& Rational::operator=(const Rational &rhs) {
+   mNumerator = rhs.mNumerator;
+   mDenominator = rhs.mDenominator;
+   return *this;
+}
+
+const Rational operator+(const Rational &lhs, const Rational &rhs) {
+   return lhs.Add(rhs);
+}
+
+const Rational operator-(const Rational &rhs) {
+   int numerator = rhs.mNumerator * -1;
+   int denominator = rhs.mDenominator;
+   return Rational(numerator, denominator);
+}
+
+const Rational operator-(const Rational &lhs, const Rational &rhs) {
+   int numerator = rhs.mDenominator * lhs.mNumerator
+         - lhs.mDenominator * rhs.mNumerator;
+   int denominator = lhs.mDenominator * rhs.mDenominator;
+   return Rational(numerator, denominator);
+}
+
+const Rational operator*(const Rational &lhs, const Rational &rhs) {
+   int numerator = lhs.mNumerator * rhs.mNumerator;
+   int denominator = lhs.mDenominator * rhs.mDenominator;
+   return Rational(numerator, denominator);
+}
+
+const Rational operator/(const Rational &lhs, const Rational &rhs) {
+   int numerator = lhs.mNumerator * rhs.mDenominator;
+   int denominator = lhs.mDenominator * rhs.mNumerator;
+   return Rational(numerator, denominator);
+}
+
+const bool operator==(const Rational &lhs, const Rational &rhs) {
+   return lhs.Equals(rhs);
+}
+
+const bool operator!=(const Rational &lhs, const Rational &rhs) {
+   return !(lhs==rhs);
+}
+
+const bool operator<(const Rational &lhs, const Rational &rhs) {
+   int first = lhs.mNumerator / lhs.mDenominator;
+   int second = rhs.mNumerator / rhs.mDenominator;
+   return first < second;
+}
+
+const bool operator>(const Rational &lhs, const Rational &rhs) {
+   int first = lhs.mNumerator / lhs.mDenominator;
+   int second = rhs.mNumerator / rhs.mDenominator;
+   return first > second;
+}
+
+const bool operator<=(const Rational &lhs, const Rational &rhs) {
+   int first = lhs.mNumerator / lhs.mDenominator;
+   int second = rhs.mNumerator / rhs.mDenominator;
+   return first <= second;
+}
+
+const bool operator>=(const Rational &lhs, const Rational &rhs) {
+   int first = lhs.mNumerator / lhs.mDenominator;
+   int second = rhs.mNumerator / rhs.mDenominator;
+   return first >= second;
 }

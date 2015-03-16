@@ -21,7 +21,18 @@ public:
    Rational Add(const Rational &other) const;
    const std::string ToString() const;
    friend std::ostream &operator<<(std::ostream &lhs, const Rational &rhs);
-   friend const Rational &friend const Rational operator=(const Rational &lhs, const Rational &rhs);operator=(const Rational &lhs, const Rational &rhs);
+   Rational &operator=(const Rational &rhs);
+   friend const Rational operator+(const Rational &lhs, const Rational &rhs);
+   friend const Rational operator-(const Rational &rhs);
+   friend const Rational operator-(const Rational &lhs, const Rational &rhs);
+   friend const Rational operator*(const Rational &lhs, const Rational &rhs);
+   friend const Rational operator/(const Rational &lhs, const Rational &rhs);
+   friend const bool operator==(const Rational &lhs, const Rational &rhs);
+   friend const bool operator!=(const Rational &lhs, const Rational &rhs);
+   friend const bool operator<(const Rational &lhs, const Rational &rhs);
+   friend const bool operator>(const Rational &lhs, const Rational &rhs);
+   friend const bool operator<=(const Rational &lhs, const Rational &rhs);
+   friend const bool operator>=(const Rational &lhs, const Rational &rhs);
 };
 
 #endif
