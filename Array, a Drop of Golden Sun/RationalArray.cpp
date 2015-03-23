@@ -31,11 +31,9 @@ RationalArray& RationalArray::operator=(const RationalArray& rhs) {
       }
    }
    else {
-      cout << "Deleting " << &mArray << endl;
       delete[] mArray;
       mArray = nullptr;
       mSize = rhs.mSize;
-      cout << "Creating " << &mArray << endl;
       mArray = new Rational[mSize];
       for (int i = 0; i < rhs.Size(); i++) {
          mArray[i] = rhs[i];
