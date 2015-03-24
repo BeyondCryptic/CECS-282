@@ -138,25 +138,25 @@ const bool operator!=(const Rational &lhs, const Rational &rhs) {
 }
 
 const bool operator<(const Rational &lhs, const Rational &rhs) {
-   double first = lhs.mNumerator / lhs.mDenominator;
-   double second = rhs.mNumerator / rhs.mDenominator;
+   double first = (double)lhs.mNumerator / lhs.mDenominator;
+   double second = (double)rhs.mNumerator / rhs.mDenominator;
    return first < second;
 }
 
 const bool operator>(const Rational &lhs, const Rational &rhs) {
-   double first = lhs.mNumerator / lhs.mDenominator;
-   double second = rhs.mNumerator / rhs.mDenominator;
+   double first = (double)lhs.mNumerator / lhs.mDenominator;
+   double second = (double)rhs.mNumerator / rhs.mDenominator;
    return first > second;
 }
 
 const bool operator<=(const Rational &lhs, const Rational &rhs) {
-   double first = lhs.mNumerator / lhs.mDenominator;
-   double second = rhs.mNumerator / rhs.mDenominator;
+   double first = (double)lhs.mNumerator / lhs.mDenominator;
+   double second = (double)rhs.mNumerator / rhs.mDenominator;
    return first <= second;
 }
 
 const bool operator>=(const Rational &lhs, const Rational &rhs) {
-   double first = lhs.mNumerator / lhs.mDenominator;
-   double second = rhs.mNumerator / rhs.mDenominator;
+   double first = (double)lhs.mNumerator / lhs.mDenominator;
+   double second = (double)rhs.mNumerator / rhs.mDenominator;
    return first >= second;
 }
