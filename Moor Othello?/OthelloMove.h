@@ -1,6 +1,7 @@
 #ifndef __OTHELLOMOVE_H
 #define __OTHELLOMOVE_H
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -31,6 +32,19 @@ private:
    // a list of FlipSets representing the enemy pieces flipped by this move
    std::vector<FlipSet> mFlips;
 
+   static int mOnHeap;
+
+   static void* operator new(std::size_t sz) {
+    mOnHeap++;
+    std::cout << "operator new: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
+    return ::operator new(sz);
+   }
+
+   static void operator delete(void* ptr, std::size_t sz) {
+    mOnHeap--;
+    std::cout << "operator delete: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
+    ::operator delete(ptr);
+   }
 
    // KEEP THESE CONSTRUCTORS PRIVATE.
    // Default constructor: initializes this move as a PASS.
@@ -55,7 +69,7 @@ public:
    (r, c); OR is the string "pass". [The user will not enter (-1,-1) to pass
    anymore.]
    */
-   OthelloMove& operator=(const std::string &);
+   OthelloMove& operator=(const std::string &move);
 
    /*
    Compares two OthelloMove objects for equality (if rows and cols are same).
@@ -70,6 +84,12 @@ public:
 
    // Returns true if the move represents a Pass.
    // TO DO: fill in this method.
-   inline bool IsPass() const {/* return true if this move is a "pass" */}
+   inline bool IsPass() const {
+      /* return true if this move is a "pass" */
+      if (mRow == -1 && mCol == -1) {
+         return true;
+      }
+      return false;
+   }
 };
 #endif
