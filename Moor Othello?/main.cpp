@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
    OthelloView v(&board); // a View for outputting the board via operator<<
    string userInput; // a string to hold the user's command choice
    vector<OthelloMove *> possMoves; // a holder for possible moves
+   cout << board.GetValue() << endl;
 
    
    // Start with this DEBUGGING CODE to make sure your basic OthelloMove and 
@@ -28,18 +29,21 @@ int main(int argc, char* argv[]) {
    cout << "Applying the move " << (string)(*m) << endl;
    board.ApplyMove(m);
    cout << endl << v << endl; // should show a changed board.
+   cout << board.GetValue() << endl;
 
    m = board.CreateMove();
    *m = "(4, 2)";
    cout << "Applying the move " << (string)(*m) << endl;
    board.ApplyMove(m);
    cout << endl << v << endl;
+   cout << board.GetValue() << endl;
 
    m = board.CreateMove();
    *m = "(5, 2)";
    cout << "Applying the move " << (string)(*m) << endl;
    board.ApplyMove(m);
    cout << endl << v << endl;
+   cout << board.GetValue() << endl;
    // END OF DEBUGGING CODE
 
 

@@ -6,7 +6,11 @@ using namespace std;
 OthelloBoard::OthelloBoard()
    : mNextPlayer(BLACK), mValue(0), mPassCount(0)
 {
-   mBoard[BOARD_SIZE][BOARD_SIZE] = { 0 };
+   for (int i = 0; i < BOARD_SIZE; i++) {
+      for (int j = 0; j < BOARD_SIZE; j++) {
+         mBoard[i][j] = 0;
+      }
+   }
    mBoard[3][3] = WHITE; // -1
    mBoard[3][4] = BLACK; // 1
    mBoard[4][3] = BLACK; // 1
@@ -20,9 +24,10 @@ void OthelloBoard::GetPossibleMoves(std::vector<OthelloMove *> *list) const {
 void OthelloBoard::ApplyMove(OthelloMove *move) {
    // Nxt = Next, Nw = New, c = count...
    if (move->mCol != -1 && move->mRow != -1) {
+      int bValue = 2, wValue = 2;
       mBoard[move->mRow][move->mCol] = GetNextPlayer();
       mHistory.push_back(move);
-      mValue = GetNextPlayer() == 1 ? mValue + 1 : mValue - 1;
+      mValue = GetNextPlayer() == 1 ? ++bValue - wValue : bValue - ++wValue;
       for (int xNxt = -1; xNxt <= 1; xNxt++) {
          for (int yNxt = -1; yNxt <= 1; yNxt++) {
             if (xNxt != 0 || yNxt != 0) {
@@ -38,7 +43,8 @@ void OthelloBoard::ApplyMove(OthelloMove *move) {
                            xNxt : false, yNxt > 0 ? yNxt : false));
                      }
                      mBoard[xPrev][yPrev] = GetNextPlayer();
-                     mValue = GetNextPlayer() == 1 ? mValue + 1 : mValue - 1;
+                     mValue = GetNextPlayer() == 1 ?
+                        ++bValue - --wValue : --bValue - ++wValue;
                      xPrev -= xNxt;
                      yPrev -= yNxt;
                      c -= 1;
@@ -49,8 +55,8 @@ void OthelloBoard::ApplyMove(OthelloMove *move) {
                   xNw += xNxt;
                   yNw += yNxt;
                }
-               xNw = move->mRow + xNxt;
-               yNw = move->mCol + yNxt;
+               // xNw = move->mRow + xNxt; // Not needed...?
+               // yNw = move->mCol + yNxt; // Not needed...?
             }
          }
       }

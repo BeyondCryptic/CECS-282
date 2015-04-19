@@ -19,6 +19,6 @@ public:
    OthelloView(OthelloBoard *b) : mOthelloBoard(b) {}
 
    // Overloaded operator<< so you can << an OthelloView object to cout.
-   friend std::ostream& operator<< (std::ostream &, const OthelloView &);
+   friend std::ostream& operator<< (std::ostream &lhs, const OthelloView &rhs);
 };
 #endif

@@ -24,7 +24,7 @@ OthelloMove& OthelloMove::operator=(const std::string &move) {
       return *this;
    }
    else {
-      istringstream s;
+      istringstream s(move);
       char junk;
       s >> junk >> mRow >> junk >> mCol >> junk;
       return *this;
