@@ -13,7 +13,7 @@ class OthelloMove {
 private:
    // OthelloBoard is a friend so it can access mRow and mCol.
    friend class OthelloBoard;
-	
+
    /*
    A FlipSet tracks a direction and # of pieces that got flipped when this 
    move was applied. See spec.
@@ -26,25 +26,11 @@ private:
       char switched;
       char rowDelta, colDelta;
    };
-   
+
    // the row and column of the move
    int mRow, mCol;
    // a list of FlipSets representing the enemy pieces flipped by this move
    std::vector<FlipSet> mFlips;
-
-   static int mOnHeap;
-
-   static void* operator new(std::size_t sz) {
-    mOnHeap++;
-    std::cout << "operator new: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
-    return ::operator new(sz);
-   }
-
-   static void operator delete(void* ptr, std::size_t sz) {
-    mOnHeap--;
-    std::cout << "operator delete: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
-    ::operator delete(ptr);
-   }
 
    // KEEP THESE CONSTRUCTORS PRIVATE.
    // Default constructor: initializes this move as a PASS.
@@ -61,8 +47,23 @@ private:
    This function is private, but OthelloBoard has friend access.
    */
    void AddFlipSet(FlipSet set) {mFlips.push_back(set);}
-    
+
 public:
+
+   static int mOnHeap;
+
+//   static void* operator new(std::size_t sz) {
+//      mOnHeap++;
+//      std::cout << "operator new: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
+//      return ::operator new(sz);
+//   }
+//
+//   static void operator delete(void* ptr, std::size_t sz) {
+//      mOnHeap--;
+//      std::cout << "operator delete: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
+//      ::operator delete(ptr);
+//   }
+
    /*
    This assignment operator takes a string representation of an Othellomove
    and uses it to initialize the move. The string is in the format
