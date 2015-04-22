@@ -52,17 +52,17 @@ public:
 
    static int mOnHeap;
 
-//   static void* operator new(std::size_t sz) {
-//      mOnHeap++;
-//      std::cout << "operator new: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
-//      return ::operator new(sz);
-//   }
-//
-//   static void operator delete(void* ptr, std::size_t sz) {
-//      mOnHeap--;
-//      std::cout << "operator delete: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
-//      ::operator delete(ptr);
-//   }
+   static void* operator new(std::size_t sz) {
+      mOnHeap++;
+      std::cout << "operator new: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
+      return ::operator new(sz);
+   }
+
+   static void operator delete(void* ptr, std::size_t sz) {
+      mOnHeap--;
+      std::cout << "operator delete: " << mOnHeap << " OthelloMoves on the heap" << std::endl;
+      ::operator delete(ptr);
+   }
 
    /*
    This assignment operator takes a string representation of an Othellomove

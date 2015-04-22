@@ -59,12 +59,14 @@ int main(int argc, char* argv[]) {
    // Main loop
    do {
       // Print the game board using the OthelloView object
-      cout << "Board value: " << board.GetValue() << endl;
       cout << v << endl;
       string player = board.GetNextPlayer() == 1 ? "Black" : "White";
       cout << player << "'s move" << endl;
       // Print all possible moves
       board.GetPossibleMoves(&possMoves);
+      for (OthelloMove *moves : possMoves) {
+         cout << (string)(*moves) << " ";
+      }
       // Ask to input a command
       cout << endl << "Enter a command: ";
       string command, values;
@@ -122,4 +124,14 @@ int main(int argc, char* argv[]) {
       }
       possMoves.clear();
    } while (!board.IsFinished()); 
+
+   if (board.GetValue() > 0) {
+      cout << "Black Wins!" << endl;
+   }
+   else if (board.GetValue() < 0) {
+      cout << "White Wins!" << endl;
+   }
+   else {
+      cout << "Tie!" << endl;
+   }
 }

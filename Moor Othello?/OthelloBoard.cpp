@@ -21,6 +21,7 @@ OthelloBoard::OthelloBoard()
 }
 
 void OthelloBoard::GetPossibleMoves(std::vector<OthelloMove *> *list) const {
+   cout << mPassCount << endl;
    char otherPlayer = GetNextPlayer() == BLACK ? WHITE : BLACK;
    for (int i = 0; i < BOARD_SIZE; i++) {
       for (int j = 0; j < BOARD_SIZE; j++) {
@@ -45,7 +46,6 @@ void OthelloBoard::GetPossibleMoves(std::vector<OthelloMove *> *list) const {
                                  }
                               }
                               if (!duplicateFound) {
-                                 cout << "(" << i << ", " << j << ") ";
                                  list->push_back(aMove);
                                  break;
                               }
@@ -63,7 +63,6 @@ void OthelloBoard::GetPossibleMoves(std::vector<OthelloMove *> *list) const {
    }
    if (list->empty()) {
       list->push_back(CreateMove());
-      cout << "pass" << endl;
    }
 }
 
@@ -73,7 +72,7 @@ void OthelloBoard::ApplyMove(OthelloMove *move) {
    if (move->mRow != -1 && move->mCol != -1) {
       mPassCount = 0;
       mBoard[move->mRow][move->mCol] = GetNextPlayer();
-      mValue = GetNextPlayer() == 1 ? mValue + 1: mValue -1;
+      mValue = GetNextPlayer() == 1 ? mValue + 1: mValue - 1;
       for (int xNxt = -1; xNxt <= 1; xNxt++) {
          for (int yNxt = -1; yNxt <= 1; yNxt++) {
             if (xNxt != 0 || yNxt != 0) {
@@ -90,7 +89,7 @@ void OthelloBoard::ApplyMove(OthelloMove *move) {
                               yNxt : yNxt == 0 ? 2 : false));
                      }
                      mBoard[xPrev][yPrev] = GetNextPlayer();
-                     mValue = GetNextPlayer() == 1 ? mValue + 1: mValue -1;
+                     mValue = GetNextPlayer() == 1 ? mValue + 1: mValue - 1;
                      xPrev -= xNxt;
                      yPrev -= yNxt;
                      c -= 1;
@@ -107,7 +106,7 @@ void OthelloBoard::ApplyMove(OthelloMove *move) {
          }
       }
    }
-   else if (mPassCount >= 1){
+   else {
       mPassCount++;
    }
    mNextPlayer = GetNextPlayer() == BLACK ? WHITE : BLACK;
@@ -123,6 +122,7 @@ void OthelloBoard::UndoLastMove() {
       for (int i = f.switched; i > 0; i--) {
          int rowDelta = f.rowDelta == 0 ? -1 * i : f.rowDelta == 1 ? 1 * i : 0;
          int colDelta = f.colDelta == 0 ? -1 * i : f.colDelta == 1 ? 1 * i : 0;
+         mValue = GetNextPlayer() == 1 ? mValue + 1: mValue - 1;
          mBoard[row + rowDelta][col + colDelta] = GetNextPlayer();
          //         cout << row << ", " << col << endl;
          //         cout << "Undo: " << rowDelta + row << ", " << colDelta + col << endl;
@@ -130,6 +130,7 @@ void OthelloBoard::UndoLastMove() {
       move->mFlips.pop_back();
    }
    move->mFlips.clear();
+   mValue = mValue - 1;
    mBoard[row][col] = EMPTY;
    mHistory.pop_back();
    delete move;
