@@ -89,29 +89,40 @@ int main(int argc, char* argv[]) {
          bool possible = false;
          for (OthelloMove *moves : possMoves) {
             if (*moves == *m) {
-               cout << "Applying the move " << (string)(*m) << endl;
+               cout << "DEBUG OUTPUT: you entered \"move " <<
+                  (string)(*m) << "\"" << endl;
                board.ApplyMove(m);
                possible = true;
                break;
             }
          }
          if (!possible) {
-            cout << "Not a possible move!" << endl;
+            cout << "DEBUG OUTPUT: you entered \"move " <<
+               (string)(*m) << "\"" << endl;
+            cout << endl << "Not a valid move!" << endl;
             delete m;
          }
       }
       else if (command == "undo") {
+         cout << "DEBUG OUTPUT: you entered \"undo " << values << "\"" << endl;
+         if ((unsigned int)atoi(values.c_str()) >
+            board.GetMoveHistory()->size()) {
+            values = to_string(board.GetMoveHistory()->size());
+         }
          for (int i = 0; i < atoi(values.c_str()); i++) {
             board.UndoLastMove();
          }
       }
       else if (command == "showValue") {
-         cout << "Board value: " << board.GetValue() << endl;
+         cout << "DEBUG OUTPUT: you entered \"showValue\"" << endl;
+         cout << endl << "Board value: " << board.GetValue() << endl;
       }
       else if (command == "showHistory") {
+         cout << "DEBUG OUTPUT: you entered \"showHistory\"" << endl;
          string histPlayer = board.GetNextPlayer() == 1 ? "White" : "Black";
          const vector<OthelloMove *>* history = board.GetMoveHistory();
-         for (vector<OthelloMove *> ::const_reverse_iterator itr = history->rbegin(); itr != history->rend(); itr++) {
+         for (vector<OthelloMove *> ::const_reverse_iterator itr =
+            history->rbegin(); itr != history->rend(); itr++) {
             cout << histPlayer << ": " << (string)(**itr) << endl;
             histPlayer = histPlayer == "White" ? "Black" : "White";
          }
@@ -126,12 +137,12 @@ int main(int argc, char* argv[]) {
    } while (!board.IsFinished()); 
 
    if (board.GetValue() > 0) {
-      cout << "Black Wins!" << endl;
+      cout << endl << "Black Wins!" << endl;
    }
    else if (board.GetValue() < 0) {
-      cout << "White Wins!" << endl;
+      cout << endl << "White Wins!" << endl;
    }
    else {
-      cout << "Tie!" << endl;
+      cout << endl << "Tie!" << endl;
    }
 }

@@ -3,8 +3,6 @@
 
 using namespace std;
 
-const int B_PIECE = 2, W_PIECE = -2;
-
 OthelloBoard::OthelloBoard()
 : mNextPlayer(BLACK), mValue(0), mPassCount(0)
 {
@@ -21,24 +19,29 @@ OthelloBoard::OthelloBoard()
 }
 
 void OthelloBoard::GetPossibleMoves(std::vector<OthelloMove *> *list) const {
-   cout << mPassCount << endl;
    char otherPlayer = GetNextPlayer() == BLACK ? WHITE : BLACK;
    for (int i = 0; i < BOARD_SIZE; i++) {
       for (int j = 0; j < BOARD_SIZE; j++) {
          if (mBoard[i][j] == 0) { // Found empty spot, now check in all directions.
+            bool added = false;
             for (int xNxt = -1; xNxt <= 1; xNxt++) {
                for (int yNxt = -1; yNxt <= 1; yNxt++) {
                   int xNw = i + xNxt, yNw = j + yNxt; // Next (first) spot in that direction.
                   while (InBounds(xNw, yNw) && mBoard[xNw][yNw] != 0) {
                      if (mBoard[xNw][yNw] == otherPlayer) {
                         while (mBoard[xNw][yNw] == otherPlayer) {
-                           int xDNxt = xNw + xNxt, yDNxt = yNw + yNxt, duplicateFound = 0; // Next-next spot in that direction
+                           int xDNxt = xNw + xNxt, yDNxt = yNw + yNxt/*, duplicateFound = 0*/; // Next-next spot in that direction
                            if (InBounds(xDNxt, yDNxt) &&
                               mBoard[xDNxt][yDNxt] == GetNextPlayer()) { // Found friendly piece after walking!
-                              OthelloMove *aMove = CreateMove();
-                              aMove->mRow = i;
-                              aMove->mCol = j;
-                              for (OthelloMove *moves : *list) {
+                              if (!added) {
+                                 OthelloMove *aMove = CreateMove();
+                                 aMove->mRow = i;
+                                 aMove->mCol = j;
+                                 list->push_back(aMove);
+                                 added = true;
+                              }
+                              break;
+                              /* for (OthelloMove *moves : *list) {
                                  if (*aMove == *moves) {
                                     delete aMove;
                                     duplicateFound = true;
@@ -48,7 +51,7 @@ void OthelloBoard::GetPossibleMoves(std::vector<OthelloMove *> *list) const {
                               if (!duplicateFound) {
                                  list->push_back(aMove);
                                  break;
-                              }
+                              } */
                            }
                            xNw += xNxt;
                            yNw += yNxt;
@@ -117,20 +120,21 @@ void OthelloBoard::UndoLastMove() {
    int row = move->mRow;
    int col = move->mCol;
    for (OthelloMove::FlipSet f : move->mFlips) {
-      char flippedThis = f.switched == 1 ? 'B' : 'W';
-      //      cout << "Flipped: " << flippedThis << endl;
       for (int i = f.switched; i > 0; i--) {
          int rowDelta = f.rowDelta == 0 ? -1 * i : f.rowDelta == 1 ? 1 * i : 0;
          int colDelta = f.colDelta == 0 ? -1 * i : f.colDelta == 1 ? 1 * i : 0;
-         mValue = GetNextPlayer() == 1 ? mValue + 1: mValue - 1;
+         mValue = GetNextPlayer() == 1 ? mValue - 1: mValue + 1;
          mBoard[row + rowDelta][col + colDelta] = GetNextPlayer();
-         //         cout << row << ", " << col << endl;
-         //         cout << "Undo: " << rowDelta + row << ", " << colDelta + col << endl;
+         // cout << row << ", " << col << endl;
+         // cout << "Undo: " << rowDelta + row << ", " << colDelta + col << endl;
       }
       move->mFlips.pop_back();
    }
    move->mFlips.clear();
-   mValue = mValue - 1;
+   mValue = GetNextPlayer() == 1 ? mValue - 1: mValue + 1;
+   if (mPassCount == 1) {
+      mPassCount--;
+   }
    mBoard[row][col] = EMPTY;
    mHistory.pop_back();
    delete move;
