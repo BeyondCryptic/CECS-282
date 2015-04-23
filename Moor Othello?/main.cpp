@@ -84,23 +84,28 @@ int main(int argc, char* argv[]) {
       // showHistory
       // quit
       if (command == "move") {
-         OthelloMove *m = board.CreateMove();
-         *m = values;
-         bool possible = false;
-         for (OthelloMove *moves : possMoves) {
-            if (*moves == *m) {
+         try {
+            OthelloMove *m = board.CreateMove();
+            *m = values;
+            bool possible = false;
+            for (OthelloMove *moves : possMoves) {
+               if (*moves == *m) {
+                  cout << "DEBUG OUTPUT: you entered \"move " <<
+                     (string)(*m) << "\"" << endl;
+                  board.ApplyMove(m);
+                  possible = true;
+                  break;
+               }
+            }
+            if (!possible) {
                cout << "DEBUG OUTPUT: you entered \"move " <<
                   (string)(*m) << "\"" << endl;
-               board.ApplyMove(m);
-               possible = true;
-               break;
+               cout << endl << "Not a valid move!" << endl;
+               delete m;
             }
          }
-         if (!possible) {
-            cout << "DEBUG OUTPUT: you entered \"move " <<
-               (string)(*m) << "\"" << endl;
-            cout << endl << "Not a valid move!" << endl;
-            delete m;
+         catch (OthelloException &e) {
+            cout << e.what() << endl;
          }
       }
       else if (command == "undo") {
