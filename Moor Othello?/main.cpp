@@ -84,8 +84,8 @@ int main(int argc, char* argv[]) {
       // showHistory
       // quit
       if (command == "move") {
+         OthelloMove *m = board.CreateMove();
          try {
-            OthelloMove *m = board.CreateMove();
             *m = values;
             bool possible = false;
             for (OthelloMove *moves : possMoves) {
@@ -105,6 +105,7 @@ int main(int argc, char* argv[]) {
             }
          }
          catch (OthelloException &e) {
+            delete m;
             cout << e.what() << endl;
          }
       }
