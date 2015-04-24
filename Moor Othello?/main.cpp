@@ -58,6 +58,7 @@ int main(int argc, char* argv[]) {
 
    // Main loop
    do {
+      bool valid = true;
       // Print the game board using the OthelloView object
       cout << v << endl;
       string player = board.GetNextPlayer() == 1 ? "Black" : "White";
@@ -67,79 +68,86 @@ int main(int argc, char* argv[]) {
       for (OthelloMove *moves : possMoves) {
          cout << (string)(*moves) << " ";
       }
-      // Ask to input a command
-      cout << endl << "Enter a command: ";
-      string command, values;
-      cin >> command;
-      try {
-         getline(cin, values);
-         values = values.substr(1, values.length());
-      }
-      catch(exception &e) {
-      }
-      // Command loop:
-      // move (r,c)
-      // undo n
-      // showValue
-      // showHistory
-      // quit
-      if (command == "move") {
-         OthelloMove *m = board.CreateMove();
+      do {
+         // Ask to input a command
+         cout << endl << "Enter a command: ";
+         string command, values;
+         cin >> command;
          try {
-            *m = values;
-            bool possible = false;
-            for (OthelloMove *moves : possMoves) {
-               if (*moves == *m) {
+            getline(cin, values);
+            values = values.substr(1, values.length());
+         }
+         catch(exception &e) {
+         }
+         // Command loop:
+         // move (r,c)
+         // undo n
+         // showValue
+         // showHistory
+         // quit
+         if (command == "move") {
+            OthelloMove *m = board.CreateMove();
+            try {
+               *m = values;
+               bool possible = false;
+               for (OthelloMove *moves : possMoves) {
+                  if (*moves == *m) {
+                     cout << "DEBUG OUTPUT: you entered \"move " <<
+                        (string)(*m) << "\"" << endl;
+                     board.ApplyMove(m);
+                     possible = true;
+                     valid = true;
+                     break;
+                  }
+               }
+               if (!possible) {
                   cout << "DEBUG OUTPUT: you entered \"move " <<
                      (string)(*m) << "\"" << endl;
-                  board.ApplyMove(m);
-                  possible = true;
-                  break;
+                  cout << endl << "Not a valid move!" << endl;
+                  valid = false;
+                  delete m;
                }
             }
-            if (!possible) {
-               cout << "DEBUG OUTPUT: you entered \"move " <<
-                  (string)(*m) << "\"" << endl;
-               cout << endl << "Not a valid move!" << endl;
+            catch (OthelloException &e) {
                delete m;
+               cout << e.what() << endl;
             }
          }
-         catch (OthelloException &e) {
-            delete m;
-            cout << e.what() << endl;
-         }
-      }
-      else if (command == "undo") {
-         cout << "DEBUG OUTPUT: you entered \"undo " << values << "\"" << endl;
-         if ((unsigned int)atoi(values.c_str()) >
+         else if (command == "undo") {
+            cout << "DEBUG OUTPUT: you entered \"undo " << values << "\"" << endl;
+            if ((unsigned int)atoi(values.c_str()) >
             board.GetMoveHistory()->size()) {
-            values = to_string(board.GetMoveCount());
+               values = to_string(board.GetMoveCount());
+            }
+            for (int i = 0; i < atoi(values.c_str()); i++) {
+               board.UndoLastMove();
+            }
+            valid = true;
          }
-         for (int i = 0; i < atoi(values.c_str()); i++) {
-            board.UndoLastMove();
+         else if (command == "showValue") {
+            cout << "DEBUG OUTPUT: you entered \"showValue\"" << endl;
+            cout << endl << "Board value: " << board.GetValue() << endl;
          }
-      }
-      else if (command == "showValue") {
-         cout << "DEBUG OUTPUT: you entered \"showValue\"" << endl;
-         cout << endl << "Board value: " << board.GetValue() << endl;
-      }
-      else if (command == "showHistory") {
-         cout << "DEBUG OUTPUT: you entered \"showHistory\"" << endl;
-         string histPlayer = board.GetNextPlayer() == 1 ? "White" : "Black";
-         const vector<OthelloMove *>* history = board.GetMoveHistory();
-         for (vector<OthelloMove *> ::const_reverse_iterator itr =
-            history->rbegin(); itr != history->rend(); itr++) {
-            cout << histPlayer << ": " << (string)(**itr) << endl;
-            histPlayer = histPlayer == "White" ? "Black" : "White";
+         else if (command == "showHistory") {
+            cout << "DEBUG OUTPUT: you entered \"showHistory\"" << endl;
+            string histPlayer = board.GetNextPlayer() == 1 ? "White" : "Black";
+            const vector<OthelloMove *>* history = board.GetMoveHistory();
+            for (vector<OthelloMove *> ::const_reverse_iterator itr =
+               history->rbegin(); itr != history->rend(); itr++) {
+               cout << histPlayer << ": " << (string)(**itr) << endl;
+               histPlayer = histPlayer == "White" ? "Black" : "White";
+            }
          }
-      }
-      else if (command == "quit") {
-         break;
-      }
-      for (OthelloMove *moves : possMoves) {
-         delete moves;
-      }
-      possMoves.clear();
+         else if (command == "quit") {
+            break;
+         }
+         if (valid) {
+            for (OthelloMove *moves : possMoves) {
+               delete moves;
+            }
+            possMoves.clear();
+         }
+      } while (!valid);
    } while (!board.IsFinished()); 
 
    if (board.GetValue() > 0) {
