@@ -113,7 +113,7 @@ int main(int argc, char* argv[]) {
          cout << "DEBUG OUTPUT: you entered \"undo " << values << "\"" << endl;
          if ((unsigned int)atoi(values.c_str()) >
             board.GetMoveHistory()->size()) {
-            values = to_string(board.GetMoveHistory()->size());
+            values = to_string(board.GetMoveCount());
          }
          for (int i = 0; i < atoi(values.c_str()); i++) {
             board.UndoLastMove();

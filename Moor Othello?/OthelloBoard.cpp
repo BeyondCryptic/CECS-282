@@ -131,12 +131,7 @@ void OthelloBoard::UndoLastMove() {
       move->mFlips.pop_back();
    }
    move->mFlips.clear();
-   if (mHistory.size() >= 1) {
-      mValue = GetNextPlayer() == 1 ? mValue + 1: mValue - 1;
-   }
-   else {
-      mValue = GetNextPlayer() == 1 ? mValue - 1: mValue + 1;
-   }
+   mValue = GetNextPlayer() == 1 ? mValue + 1: mValue - 1;
    if (mPassCount == 1) {
       mPassCount--;
    }
