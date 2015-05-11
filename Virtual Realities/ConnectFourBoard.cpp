@@ -127,7 +127,7 @@ bool ConnectFourBoard::IsFourInARow() const {
       int realDepth = MAX_DIAGONAL_DEPTH - i;
       for (int j = 0; j < realDepth; j++) {
          // cout << "Depth " << j + 1 << endl;
-         int y = 0, r = 0;
+         int y = 0, r = 0, yS = 0, rS = 0;
          int startingRow = i + j;
          int startingCol = j;
          int aCol = startingCol;
@@ -140,7 +140,14 @@ bool ConnectFourBoard::IsFourInARow() const {
             if (mBoard[aRow][aCol] == -1) {
                r++;
             }
-            if (y == Y_COUNT || r == R_COUNT) {
+            if (mBoard[aRow + shiftRow][aCol + shiftCol] == 1) {
+               y++;
+            }
+            if (mBoard[aRow + shiftRow][aCol + shiftCol] == -1) {
+               r++;
+            }
+            if (y == Y_COUNT || r == R_COUNT
+               || yS == Y_COUNT || rS == R_COUNT) {
                return true;
             }
             aCol++;
@@ -156,7 +163,7 @@ bool ConnectFourBoard::IsFourInARow() const {
       int realDepth = MAX_DIAGONAL_DEPTH - i;
       for (int j = 0; j < realDepth; j++) {
          // cout << "Depth " << j + 1 << endl;
-         int y = 0, r = 0;
+         int y = 0, r = 0, yS = 0, rS = 0;
          int startingRow = i + j;
          int startingCol = 6-j;
          int aCol = startingCol;
@@ -170,6 +177,16 @@ bool ConnectFourBoard::IsFourInARow() const {
                r++;
             }
             if (y == Y_COUNT || r == R_COUNT) {
+               return true;
+            }
+            if (mBoard[aRow + shiftRowA][aCol + shiftColA] == 1) {
+               yS++;
+            }
+            if (mBoard[aRow + shiftRowA][aCol + shiftColA] == -1) {
+               rS++;
+            }
+            if (y == Y_COUNT || r == R_COUNT
+               || yS == Y_COUNT || rS == R_COUNT) {
                return true;
             }
             aCol--;
