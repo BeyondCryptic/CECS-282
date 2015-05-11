@@ -9,20 +9,26 @@ using namespace std;
 int ConnectFourMove::mOnHeap = 0;
 const int MAX_SIZE_A = 65;
 const int MAX_SIZE_G = 71;
+const int LOWERCASE_LETTER_A = 97;
+const int LOWERCASE_LETTER_G = 103;
+const int LOWER_TO_UPPER = 32;
 
 ConnectFourMove::ConnectFourMove()
-   : mRealRow(-1), mRealCol(-1), mCol(-1) // Not a pass...
+: mRealRow(-1), mRealCol(-1), mCol(-1) // Not a pass...
 {
 }
 
 ConnectFourMove::ConnectFourMove(char col)
-   : mRealRow(-1), mRealCol(-1), mCol(col)
+: mRealRow(-1), mRealCol(-1), mCol(col)
 {
 }
 
 GameMove& ConnectFourMove::operator=(const std::string &move) {
    istringstream s(move.substr(0, 1));
    s >> mCol;
+   if (mCol >= LOWERCASE_LETTER_A && mCol <= LOWERCASE_LETTER_G) {
+      mCol = mCol - LOWER_TO_UPPER;
+   }
    if (mCol < MAX_SIZE_A || mCol > MAX_SIZE_G) {
       throw ConnectFourException("out of bounds (not a valid column)");
    }

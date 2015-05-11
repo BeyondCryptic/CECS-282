@@ -54,10 +54,8 @@ void ConnectFourBoard::ApplyMove(GameMove *move) {
       }
    }
    mValue = GetNextPlayer();
-   if (mHistory.size() == MAX_PLAYS_C) {
-      if (!IsFourInARow()) {
-         mValue = 0;
-      }
+   if (!IsFourInARow()) {
+      mValue = 0;
    }
    mNextPlayer = GetNextPlayer() == Y ? R : Y;
 }
@@ -69,7 +67,7 @@ void ConnectFourBoard::UndoLastMove() {
    }
    int row = move->mRealRow;
    int col = move->mRealCol;
-   mValue = GetNextPlayer();
+   mValue = 0;
    mBoard[row][col] = EMPTY;
    mHistory.pop_back();
    delete move;

@@ -38,10 +38,8 @@ void TicTacToeBoard::ApplyMove(GameMove *move) {
    mHistory.push_back(m);
    mBoard[m->mRow][m->mCol] = GetNextPlayer();
    mValue = GetNextPlayer();
-   if (mHistory.size() == MAX_PLAYS_T) {
-      if (!IsThreeInARow()) {
-         mValue = 0;
-      }
+   if (!IsThreeInARow()) {
+      mValue = 0;
    }
    mNextPlayer = GetNextPlayer() == X ? O : X;
 }
@@ -53,7 +51,7 @@ void TicTacToeBoard::UndoLastMove() {
    }
    int row = move->mRow;
    int col = move->mCol;
-   mValue = GetNextPlayer();
+   mValue = 0;
    mBoard[row][col] = EMPTY;
    mHistory.pop_back();
    delete move;
