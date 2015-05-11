@@ -59,75 +59,8 @@ void TicTacToeBoard::UndoLastMove() {
 }
 
 bool TicTacToeBoard::IsFinished() const {
-   // Check from (0, 0) - Vertical
-   for (int i = 0; i < BOARD_SIZE_T; i++) {
-      int x = 0, o = 0;
-      for (int j = 0; j < BOARD_SIZE_T; j++) {
-         if (mBoard[i][j] == 0) {
-            break;
-         }
-         if (mBoard[i][j] == 1) {
-            x++;
-         }
-         if (mBoard[i][j] == -1) {
-            o++;
-         }
-         if (x == X_COUNT || o == O_COUNT) {
-            return true;
-         }
-      }
-   }
-   // Check from (0, 0) - Horizontal
-   for (int i = 0; i < BOARD_SIZE_T; i++) {
-      int x = 0, o = 0;
-      for (int j = 0; j < BOARD_SIZE_T; j++) {
-         if (mBoard[j][i] == 0) {
-            break;
-         }
-         if (mBoard[j][i] == 1) {
-            x++;
-         }
-         if (mBoard[j][i] == -1) {
-            o++;
-         }
-         if (x == X_COUNT || o == O_COUNT) {
-            return true;
-         }
-      }
-   }
-   // Check from (0, 0) - Diagonals
-   int xD = 0, oD = 0;
-   for (int i = 0; i < BOARD_SIZE_T; i++) {
-      int j = i;
-      if (mBoard[i][j] == 0) {
-         break;
-      }
-      if (mBoard[i][j] == 1) {
-         xD++;
-      }
-      if (mBoard[i][j] == -1) {
-         oD++;
-      }
-      if (xD == X_COUNT || oD == O_COUNT) {
-         return true;
-      }
-   }
-   // Check from (0, 2) - Anti-Diagonals
-   int xAD = 0, oAD = 0;
-   for (int i = 0; i < BOARD_SIZE_T; i++) {
-      int j = 2-i;
-      if (mBoard[i][j] == 0) {
-         break;
-      }
-      if (mBoard[i][j] == 1) {
-         xAD++;
-      }
-      if (mBoard[i][j] == -1) {
-         oAD++;
-      }
-      if (xAD == X_COUNT || oAD == O_COUNT) {
-         return true;
-      }
+   if (IsThreeInARow()) {
+      return true;
    }
    // Checks for tie.
    if (mHistory.size() == MAX_PLAYS_T) {
@@ -136,7 +69,7 @@ bool TicTacToeBoard::IsFinished() const {
    return false;
 }
 
-bool TicTacToeBoard::IsThreeInARow() {
+bool TicTacToeBoard::IsThreeInARow() const {
    // Check from (0, 0) - Vertical
    for (int i = 0; i < BOARD_SIZE_T; i++) {
       int x = 0, o = 0;

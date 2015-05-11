@@ -69,7 +69,7 @@ public:
 private:
    friend class TicTacToeView;
 
-   bool IsThreeInARow();
+   bool IsThreeInARow() const;
 
    // NOTE: we inherit mNextPlayer, mValue, and mHistory from GameBoard.
    char mBoard[BOARD_SIZE_T][BOARD_SIZE_T];

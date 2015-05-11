@@ -75,7 +75,7 @@ public:
 private:
    friend class ConnectFourView;
 
-   bool IsFourInARow();
+   bool IsFourInARow() const;
 
    // NOTE: we inherit mNextPlayer, mValue, and mHistory from GameBoard.
    char mBoard[BOARD_SIZE_CR][BOARD_SIZE_CC];

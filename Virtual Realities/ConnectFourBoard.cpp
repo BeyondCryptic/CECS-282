@@ -75,114 +75,8 @@ void ConnectFourBoard::UndoLastMove() {
 }
 
 bool ConnectFourBoard::IsFinished() const {
-   // Check from (0, 0) - Vertical
-   for (int i = 0; i < VERTICAL_DEPTH; i++) {
-      for (int j = 0; j < BOARD_SIZE_CC; j++) {
-         int y = 0, r = 0;
-         for (int k = i; k < i + FOUR_IN_A_ROW; k++) {
-            if (mBoard[k][j] == 1) {
-               y++;
-            }
-            if (mBoard[k][j] == -1) {
-               r++;
-            }
-            if (y == Y_COUNT || r == R_COUNT) {
-               return true;
-            }
-         }
-      }
-   }
-   // Check from (0, 0) - Horizontal
-   for (int i = 0; i < BOARD_SIZE_CR; i++) {
-      for (int j = 0; j < HORIZONTAL_DEPTH; j++) {
-         int y = 0, r = 0;
-         for (int k = j; k < j + FOUR_IN_A_ROW; k++) {
-            if (mBoard[i][k] == 1) {
-               y++;
-            }
-            if (mBoard[i][k] == -1) {
-               r++;
-            }
-            if (y == Y_COUNT || r == R_COUNT) {
-               return true;
-            }
-         }
-      }
-   }
-   // Check from (0, 0) - Diagonals
-   int shiftRow = 0;
-   int shiftCol = 1;
-   for (int i = 0; i < MAX_DIAGONAL_DEPTH; i++) {
-      int realDepth = MAX_DIAGONAL_DEPTH - i;
-      for (int j = 0; j < realDepth; j++) {
-         // cout << "Depth " << j + 1 << endl;
-         int y = 0, r = 0, yS = 0, rS = 0;
-         int startingRow = i + j;
-         int startingCol = j;
-         int aCol = startingCol;
-         for (int aRow = startingRow; aRow < FOUR_IN_A_ROW + startingRow; aRow++) {
-            // cout << "Regular Row: (" << aRow << ", " << aCol << ")" << endl;
-            // cout << "Shifted Row: (" << aRow + shiftRow << ", " << aCol + shiftCol << ")" << endl;
-            if (mBoard[aRow][aCol] == 1) {
-               y++;
-            }
-            if (mBoard[aRow][aCol] == -1) {
-               r++;
-            }
-            if (mBoard[aRow + shiftRow][aCol + shiftCol] == 1) {
-               y++;
-            }
-            if (mBoard[aRow + shiftRow][aCol + shiftCol] == -1) {
-               r++;
-            }
-            if (y == Y_COUNT || r == R_COUNT
-               || yS == Y_COUNT || rS == R_COUNT) {
-               return true;
-            }
-            aCol++;
-         }
-      }
-      shiftRow--;
-      shiftCol++;
-   }
-   // Check from (0, 6) - Anti-Diagonals
-   int shiftRowA = 0;
-   int shiftColA = -1;
-   for (int i = 0; i < MAX_DIAGONAL_DEPTH; i++) {
-      int realDepth = MAX_DIAGONAL_DEPTH - i;
-      for (int j = 0; j < realDepth; j++) {
-         // cout << "Depth " << j + 1 << endl;
-         int y = 0, r = 0, yS = 0, rS = 0;
-         int startingRow = i + j;
-         int startingCol = 6-j;
-         int aCol = startingCol;
-         for (int aRow = startingRow; aRow < FOUR_IN_A_ROW + startingRow; aRow++) {
-            // cout << "Regular Row: (" << aRow << ", " << aCol << ")" << endl;
-            // cout << "Shifted Row: (" << aRow + shiftRowA << ", " << aCol + shiftColA << ")" << endl;
-            if (mBoard[aRow][aCol] == 1) {
-               y++;
-            }
-            if (mBoard[aRow][aCol] == -1) {
-               r++;
-            }
-            if (y == Y_COUNT || r == R_COUNT) {
-               return true;
-            }
-            if (mBoard[aRow + shiftRowA][aCol + shiftColA] == 1) {
-               yS++;
-            }
-            if (mBoard[aRow + shiftRowA][aCol + shiftColA] == -1) {
-               rS++;
-            }
-            if (y == Y_COUNT || r == R_COUNT
-               || yS == Y_COUNT || rS == R_COUNT) {
-               return true;
-            }
-            aCol--;
-         }
-      }
-      shiftRowA--;
-      shiftColA--;
+   if (IsFourInARow()) {
+      return true;
    }
    // Checks for tie.
    if (mHistory.size() == MAX_PLAYS_C) {
@@ -191,7 +85,7 @@ bool ConnectFourBoard::IsFinished() const {
    return false;
 }
 
-bool ConnectFourBoard::IsFourInARow() {
+bool ConnectFourBoard::IsFourInARow() const {
    // Check from (0, 0) - Vertical
    for (int i = 0; i < VERTICAL_DEPTH; i++) {
       for (int j = 0; j < BOARD_SIZE_CC; j++) {
