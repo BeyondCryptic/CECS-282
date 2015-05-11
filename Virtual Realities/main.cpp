@@ -8,6 +8,9 @@
 #include "TicTacToeBoard.h"
 #include "TicTacToeView.h"
 #include "TicTacToeMove.h"
+#include "ConnectFourBoard.h"
+#include "ConnectFourView.h"
+#include "ConnectFourMove.h"
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -42,7 +45,8 @@ int main(int argc, char* argv[]) {
             choiceIsValid = true;
          }
          else if (userChoice == 3) {
-
+            board = new ConnectFourBoard();
+            v = new ConnectFourView(board);
             choiceIsValid = true;
          }
          else if (userChoice == 4) {
@@ -70,7 +74,7 @@ int main(int argc, char* argv[]) {
             player = board->GetNextPlayer() == 1 ? "X" : "O";
          }
          else {
-            player = board->GetNextPlayer() == 1 ? "Y" : "R";
+            player = board->GetNextPlayer() == 1 ? "Yellow" : "Red";
          }
          cout << player << "'s move" << endl;
          // Print all possible moves
@@ -149,7 +153,7 @@ int main(int argc, char* argv[]) {
                   histPlayer = board->GetNextPlayer() == 1 ? "O" : "X";
                }
                else {
-                  histPlayer = board->GetNextPlayer() == 1 ? "R" : "Y";
+                  histPlayer = board->GetNextPlayer() == 1 ? "Red" : "Yellow";
                }
                const vector<GameMove *>* history = board->GetMoveHistory();
                for (vector<GameMove *> ::const_reverse_iterator itr =
@@ -162,7 +166,7 @@ int main(int argc, char* argv[]) {
                      histPlayer = histPlayer == "O" ? "X" : "O";
                   }
                   else {
-                     histPlayer = histPlayer == "R" ? "Y" : "R";
+                     histPlayer = histPlayer == "Red" ? "Yellow" : "Red";
                   }
                }
             }
@@ -195,7 +199,7 @@ int main(int argc, char* argv[]) {
             cout << endl << "X Wins!" << endl;
          }
          else {
-            cout << endl << "Y Wins!" << endl;
+            cout << endl << "Yellow Wins!" << endl;
          }
       }
       else if (board->GetValue() < 0) {
@@ -206,7 +210,7 @@ int main(int argc, char* argv[]) {
             cout << endl << "O Wins!" << endl;
          }
          else {
-            cout << endl << "R Wins!" << endl;
+            cout << endl << "Red Wins!" << endl;
          }
       }
       else {

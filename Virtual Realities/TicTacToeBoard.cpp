@@ -35,11 +35,10 @@ void TicTacToeBoard::ApplyMove(GameMove *move) {
    if (m == nullptr) {
       throw TicTacToeException("Tried to apply a non-TicTacToeMove.");
    }
-   // Nxt = Next, Nw = New, c = count...
    mHistory.push_back(m);
    mBoard[m->mRow][m->mCol] = GetNextPlayer();
    mValue = GetNextPlayer();
-   if (mHistory.size() == 9) {
+   if (mHistory.size() == MAX_PLAYS_T) {
       if (!IsThreeInARow()) {
          mValue = 0;
       }
@@ -75,7 +74,7 @@ bool TicTacToeBoard::IsFinished() const {
          if (mBoard[i][j] == -1) {
             o++;
          }
-         if (x == 3 || o == 3) {
+         if (x == X_COUNT || o == O_COUNT) {
             return true;
          }
       }
@@ -93,7 +92,7 @@ bool TicTacToeBoard::IsFinished() const {
          if (mBoard[j][i] == -1) {
             o++;
          }
-         if (x == 3 || o == 3) {
+         if (x == X_COUNT || o == O_COUNT) {
             return true;
          }
       }
@@ -111,7 +110,7 @@ bool TicTacToeBoard::IsFinished() const {
       if (mBoard[i][j] == -1) {
          oD++;
       }
-      if (xD == 3 || oD == 3) {
+      if (xD == X_COUNT || oD == O_COUNT) {
          return true;
       }
    }
@@ -128,12 +127,12 @@ bool TicTacToeBoard::IsFinished() const {
       if (mBoard[i][j] == -1) {
          oAD++;
       }
-      if (xAD == 3 || oAD == 3) {
+      if (xAD == X_COUNT || oAD == O_COUNT) {
          return true;
       }
    }
    // Checks for tie.
-   if (mHistory.size() == 9) {
+   if (mHistory.size() == MAX_PLAYS_T) {
       return true;
    }
    return false;
@@ -153,7 +152,7 @@ bool TicTacToeBoard::IsThreeInARow() {
          if (mBoard[i][j] == -1) {
             o++;
          }
-         if (x == 3 || o == 3) {
+         if (x == X_COUNT || o == O_COUNT) {
             return true;
          }
       }
@@ -171,7 +170,7 @@ bool TicTacToeBoard::IsThreeInARow() {
          if (mBoard[j][i] == -1) {
             o++;
          }
-         if (x == 3 || o == 3) {
+         if (x == X_COUNT || o == O_COUNT) {
             return true;
          }
       }
@@ -189,7 +188,7 @@ bool TicTacToeBoard::IsThreeInARow() {
       if (mBoard[i][j] == -1) {
          oD++;
       }
-      if (xD == 3 || oD == 3) {
+      if (xD == X_COUNT || oD == O_COUNT) {
          return true;
       }
    }
@@ -206,7 +205,7 @@ bool TicTacToeBoard::IsThreeInARow() {
       if (mBoard[i][j] == -1) {
          oAD++;
       }
-      if (xAD == 3 || oAD == 3) {
+      if (xAD == X_COUNT || oAD == O_COUNT) {
          return true;
       }
    }

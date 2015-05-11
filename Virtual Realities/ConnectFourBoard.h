@@ -1,34 +1,40 @@
-#ifndef __TICTACTOEBOARD_H
-#define __TICTACTOEBOARD_H
+#ifndef __CONNECTFOURBOARD_H
+#define __CONNECTFOURBOARD_H
 
 #include <vector>
-#include "TicTacToeMove.h"
+#include "ConnectFourMove.h"
 #include "GameBoard.h"
 #include "GameMove.h"
 
-const int BOARD_SIZE_T = 3;
-const int MAX_PLAYS_T = 9;
-const int X_COUNT = 3;
-const int O_COUNT = 3;
+const int BOARD_SIZE_CR = 6;
+const int BOARD_SIZE_CC = 7;
+const int MAX_PLAYS_C = 42;
+const int LETTER_A = 65;
+const int VERTICAL_DEPTH = 3;
+const int HORIZONTAL_DEPTH = 4;
+const int MAX_DIAGONAL_DEPTH = 3;
+const int Y_COUNT = 4;
+const int R_COUNT = 4;
+const int FOUR_IN_A_ROW = 4;
 
 /*
-An TicTacToeBoard encapsulates data needed to represent a single game of TicTacToe.
+An ConnectFourBoard encapsulates data needed to represent a single game of ConnectFour.
 This includes the state of the board, tracking the current player, and keeping
 a history of moves on the board.
 */
-class TicTacToeBoard : public GameBoard {
+class ConnectFourBoard : public GameBoard {
 
 public:
-   enum Player {EMPTY = 0, X = 1, O = -1};
+   enum Player {EMPTY = 0, Y = 1, R = -1};
 
    // Default constructor initializes the board to its starting "new game" state
-   TicTacToeBoard();
+   ConnectFourBoard();
 
    /*
    Fills in a vector with all possible moves on the current board state for
    the current player. The moves should be ordered based first on row, then on
    column. Example ordering: (0, 5) (0, 7) (1, 0) (2, 0) (2, 2) (7, 7).
-   If no moves are possible, then a single TicTacToeMove representing a Pass is
+   If no moves are possible, then a single ConnectFourMove representing a Pass is
    put in the vector.
    Precondition: the vector is empty.
    Postcondition: the vector contains all valid moves for the current player.
@@ -49,29 +55,29 @@ public:
    virtual void UndoLastMove();
 
    /*
-   Creates an TicTacToeMove object on the heap. Whoever calls this method is
+   Creates an ConnectFourMove object on the heap. Whoever calls this method is
    responsible for managing the move's lifetime (or transferring that task to
    someone else.)
    */
-   virtual GameMove *CreateMove() const {return new TicTacToeMove;}
+   virtual GameMove *CreateMove() const {return new ConnectFourMove;}
 
    inline static bool InBounds(int row, int col) {
-      return row >= 0 && row < BOARD_SIZE_T && col >= 0 && col < BOARD_SIZE_T;
+      return row >= 0 && row < BOARD_SIZE_CR && col >= 0 && col < BOARD_SIZE_CC;
    }
 
    // Returns true if the game is finished.
    virtual bool IsFinished() const;
 
    std::string GetPlayerString(char player) {
-      return (player == 1 ? "X" : "O");
+      return (player == 1 ? "Y" : "R");
    }
 
 private:
-   friend class TicTacToeView;
+   friend class ConnectFourView;
 
-   bool IsThreeInARow();
+   bool IsFourInARow();
 
    // NOTE: we inherit mNextPlayer, mValue, and mHistory from GameBoard.
-   char mBoard[BOARD_SIZE_T][BOARD_SIZE_T];
+   char mBoard[BOARD_SIZE_CR][BOARD_SIZE_CC];
 };
 #endif

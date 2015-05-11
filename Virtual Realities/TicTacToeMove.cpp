@@ -7,7 +7,7 @@
 using namespace std;
 
 int TicTacToeMove::mOnHeap = 0;
-const int MAX_SIZE = 8;
+const int MAX_SIZE = 3;
 
 TicTacToeMove::TicTacToeMove()
    : mRow(-1), mCol(-1) // Not a pass...

@@ -19,4 +19,9 @@ public:
    TicTacToeException(const std::string &m) : GameException(m) {}
 };
 
+class ConnectFourException : public GameException {
+public:
+   ConnectFourException(const std::string &m) : GameException(m) {}
+};
+
 #endif
