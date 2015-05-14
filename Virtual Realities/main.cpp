@@ -31,32 +31,30 @@ int main(int argc, char* argv[]) {
       int userChoice;
       bool choiceIsValid = false, quit = false;
       while (!choiceIsValid) {
-         cout << "Which game do you want to play?" << endl;
-         cout << "1. Othello\n2. Tic Tac Toe\n3. Connect Four\n4. Exit" << endl;
+         cout << "Which game do you want to play?\n1. Othello\n2. Tic Tac Toe"
+            "\n3. Connect Four\n4. Exit" << endl;
          cin >> userChoice;
          if (userChoice == 1) {
             board = new OthelloBoard();
             v = new OthelloView(board);
-            choiceIsValid = true;
          }
          else if (userChoice == 2) {
             board = new TicTacToeBoard();
             v = new TicTacToeView(board);
-            choiceIsValid = true;
          }
          else if (userChoice == 3) {
             board = new ConnectFourBoard();
             v = new ConnectFourView(board);
-            choiceIsValid = true;
          }
          else if (userChoice == 4) {
             exit = true;
-            choiceIsValid = true;
             break;
          }
          else {
             cout << "Invalid Choice!" << endl;
+            continue;
          }
+         choiceIsValid = true;
       }
       if (exit) {
          break;
@@ -66,16 +64,7 @@ int main(int argc, char* argv[]) {
          bool valid = true;
          // Print the game board using the GameView object
          cout << *v << endl;
-         string player = "";
-         if (userChoice == 1) {
-            player = board->GetNextPlayer() == 1 ? "Black" : "White";
-         }
-         else if (userChoice == 2) {
-            player = board->GetNextPlayer() == 1 ? "X" : "O";
-         }
-         else {
-            player = board->GetNextPlayer() == 1 ? "Yellow" : "Red";
-         }
+         string player = board->GetPlayerString(board->GetNextPlayer());
          cout << player << "'s move" << endl;
          // Print all possible moves
          board->GetPossibleMoves(&possMoves);
@@ -104,10 +93,10 @@ int main(int argc, char* argv[]) {
                try {
                   *m = values;
                   bool possible = false;
+                  cout << "DEBUG OUTPUT: you entered \"move " <<
+                     static_cast<string>(*m) << "\"" << endl;
                   for (GameMove *moves : possMoves) {
                      if (*moves == *m) {
-                        cout << "DEBUG OUTPUT: you entered \"move " <<
-                           static_cast<string>(*m) << "\"" << endl;
                         board->ApplyMove(m);
                         possible = true;
                         valid = true;
@@ -115,8 +104,6 @@ int main(int argc, char* argv[]) {
                      }
                   }
                   if (!possible) {
-                     cout << "DEBUG OUTPUT: you entered \"move " <<
-                        static_cast<string>(*m) << "\"" << endl;
                      cout << endl << "Not a valid move!" << endl;
                      valid = false;
                      delete m;
@@ -145,29 +132,14 @@ int main(int argc, char* argv[]) {
             }
             else if (command == "showHistory") {
                cout << "DEBUG OUTPUT: you entered \"showHistory\"" << endl;
-               string histPlayer = "";
-               if (userChoice == 1) {
-                  histPlayer = board->GetNextPlayer() == 1 ? "White" : "Black";
-               }
-               else if (userChoice == 2) {
-                  histPlayer = board->GetNextPlayer() == 1 ? "O" : "X";
-               }
-               else {
-                  histPlayer = board->GetNextPlayer() == 1 ? "Red" : "Yellow";
-               }
-               const vector<GameMove *>* history = board->GetMoveHistory();
-               for (vector<GameMove *> ::const_reverse_iterator itr =
-                  history->rbegin(); itr != history->rend(); itr++) {
-                  cout << histPlayer << ": " << (string)(**itr) << endl;
-                  if (userChoice == 1) {
-                     histPlayer = histPlayer == "White" ? "Black" : "White";
-                  }
-                  else if (userChoice == 2) {
-                     histPlayer = histPlayer == "O" ? "X" : "O";
-                  }
-                  else {
-                     histPlayer = histPlayer == "Red" ? "Yellow" : "Red";
-                  }
+               // hP = historyPlayer
+               string hP = board->GetNextPlayer() == 1 ?
+                  board->GetPlayerString(-1) : board->GetPlayerString(1);
+               const vector<GameMove *>* hist = board->GetMoveHistory();
+               for (auto itr = hist->rbegin();itr != hist->rend(); itr++) {
+                  cout << hP << ": " << (string)(**itr) << endl;
+                  hP = hP == board->GetPlayerString(1) ?
+                     board->GetPlayerString(-1): board->GetPlayerString(1);
                }
             }
             else if (command == "quit") {
@@ -191,27 +163,9 @@ int main(int argc, char* argv[]) {
          cout << *v << endl;
       }
 
-      if (board->GetValue() > 0) {
-         if (userChoice == 1) {
-            cout << endl << "Black Wins!" << endl;
-         }
-         else if (userChoice == 2) {
-            cout << endl << "X Wins!" << endl;
-         }
-         else {
-            cout << endl << "Yellow Wins!" << endl;
-         }
-      }
-      else if (board->GetValue() < 0) {
-         if (userChoice == 1) {
-            cout << endl << "White Wins!" << endl;
-         }
-         else if (userChoice == 2) {
-            cout << endl << "O Wins!" << endl;
-         }
-         else {
-            cout << endl << "Red Wins!" << endl;
-         }
+      if (board->GetValue() > 0 || board->GetValue() < 0) {
+         cout << endl << board->GetPlayerString(-1 * board->GetNextPlayer())
+               << " Wins!" << endl;
       }
       else {
          cout << endl << "Tie!" << endl;
